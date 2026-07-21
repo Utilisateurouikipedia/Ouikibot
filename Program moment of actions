@@ -1,0 +1,9 @@
+- name: ouikibot-article-semaine
+  image: bookworm
+  command: /data/project/ouikibot/env/bin/python3 /data/project/ouikibot/article_semaine/script.py
+  schedule: "0 0 * * 1"
+
+- name: annonce-article-semaine
+  image: bookworm
+  command: /data/project/ouikibot/article_semaine/run.sh
+  schedule: "30 0 * * 1"
