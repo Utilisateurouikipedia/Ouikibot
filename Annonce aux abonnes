@@ -1,0 +1,25 @@
+import pywikibot
+
+def main():
+    site = pywikibot.Site('fr', 'wikipedia')
+    site.login()
+
+    print("Lecture de la liste des abonnés")
+
+    page_liste = pywikibot.Page(site, "Wikipédia:Article de la semaine/Abonnés")
+
+    abonnes = ['Chaotic Enby', 'Maxime2024', 'Gabon100']
+
+    print(f"Abonnés trouvés ({len(abonnes)}) : {abonnes}")
+
+    message = "{{subst:Wikipédia:Article de la semaine/Annonce aux abonnés}} ~~~~"
+
+    for nom_utilisateur in abonnes:
+        page_discussion = pywikibot.Page(site, f"Discussion utilisateur:{nom_utilisateur}")
+        print(f"Envoi de la notification à : {nom_utilisateur}...")
+
+        page_discussion.text += f"\n\n== {sujet} ==\n{message}"
+        page_discussion.save(summary="Bot : Annonce automatique à un(e) abonné(e) de l'[[Wikipédia:Article de la semaine|Article de la semaine]]", minor=False)
+
+if __name__ == "__main__":
+    main()
