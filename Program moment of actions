@@ -1,5 +1,5 @@
 - name: ouikibot-article-semaine
-  schedule: "5 0 * * 1"
+  schedule: "10 0 * * 1"
   command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/script.py
   image: python3.11
 
@@ -11,4 +11,9 @@
 - name: bouton-arret-ouikibot
   schedule: "*/5 * * * *"
   command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/bouton_arret.py
+  image: python3.11
+
+- name: discussion-article-semaine
+  schedule: "5 0 * * 1"
+  command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/discussion_article.py
   image: python3.11
