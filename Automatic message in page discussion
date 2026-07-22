@@ -1,0 +1,35 @@
+from datetime import datetime
+import os
+import pywikibot
+
+if os.path.exists("bot_stopped.txt"):
+    print("Le bot est à l'arrêt d’urgence. Opération annulée.")
+    exit(0)
+
+site = pywikibot.Site("fr", "wikipedia")
+
+modele_accueil = "{{AccueilArticleDeLaSemaine/{{CURRENTWEEK}} {{CURRENTYEAR}}}}"
+nom_article = site.expand_text(modele_accueil).strip()
+
+print(f"📌 Article de la semaine détecté : {nom_article}")
+
+page_pdd = pywikibot.Page(site, f"Discussion:{nom_article}")
+
+aujourdhui = datetime.now()
+numero_semaine = aujourdhui.isocalendar()[1]
+annee = aujourdhui.year
+
+sujet = "Ressources de l'Article de la semaine"
+message = (
+    f"Cet article est l'article de la semaine {numero_semaine} de l'année {annee}. "
+    "Envoyez ci-dessous vos ressources ou discussions concernant cet article et l'Article de la semaine. "
+    "Cette discussion a été créée automatiquement par un bot. Pour parler à un membre, regardez la [[:Catégorie:Utilisateur Article de la semaine|liste des membres]] ou allez en [[Discussion Wikipédia:Article de la semaine|page de discussion]]. ~~~~"
+)
+
+contenu_ajoute = f"\n\n== {sujet} ==\n{message}"
+page_pdd.text += contenu_ajoute
+page_pdd.save(
+    summary=f"Bot : Création automatique de la discussion de l'[[Wikipédia:Article de la semaine|Article de la semaine]] {numero_semaine}"
+)
+
+print(f"✅ Discussion créée sur Discussion:{nom_article} !")
