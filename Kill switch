@@ -1,0 +1,52 @@
+import os
+import pywikibot
+
+STATUS_FILE = "bot_stopped.txt"
+LAST_REVID_FILE = "last_revid.txt"
+ADMIN_TALK_PAGE = "Discussion utilisateur:Utilisateur ouikipedia"
+BOT_TALK_PAGE = "Discussion utilisateur:Ouikibot"
+
+def main():
+    if os.path.exists(STATUS_FILE):
+        return
+
+    site = pywikibot.Site('wikipedia', 'fr')
+    bot_talk = pywikibot.Page(site, BOT_TALK_PAGE)
+
+    try:
+        current_revid = bot_talk.latest_revision_id
+    except Exception as e:
+        print(f"Impossible de vérifier la PDD du bot : {e}")
+        return
+
+    last_revid = None
+    if os.path.exists(LAST_REVID_FILE):
+        with open(LAST_REVISION_FILE, "r") as f:
+            try:
+                last_revid = int(f.read().strip())
+            except ValueError:
+                pass
+
+    if last_revid is None:
+        with open(LAST_REVISION_FILE, "w") as f:
+            f.write(str(current_revid))
+        return
+
+    if current_revid != last_revid:
+        print("🚨 Changement détecté sur la PDD ! Activation du bouton d'arrêt.")
+
+        with open(STATUS_FILE, "w") as f:
+            f.write(f"Stoppé suite à la révision {current_revid}")
+
+        try:
+            admin_talk = pywikibot.Page(site, ADMIN_TALK_PAGE)
+            msg = "\n== 🛑 Arrêt d'urgence de Ouikibot ==\n" \
+                  "La page de discussion du bot a été modifiée. Le bot s'est désactivé automatiquement. ~~~~"
+            admin_talk.text += msg
+            admin_talk.save(summary="Bot : Notification d'arrêt d'urgence")
+            print("Message de notification envoyé à l'administrateur.")
+        except Exception as e:
+            print(f"Erreur lors de l'envoi de la notification de mon dresseur ({e}). Étape sautée.")
+
+if __name__ == "__main__":
+    main()
