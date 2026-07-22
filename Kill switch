@@ -10,7 +10,7 @@ def main():
     if os.path.exists(STATUS_FILE):
         return
 
-    site = pywikibot.Site('wikipedia', 'fr')
+    site = pywikibot.Site('fr', 'wikipedia')
     bot_talk = pywikibot.Page(site, BOT_TALK_PAGE)
 
     try:
