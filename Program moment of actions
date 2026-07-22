@@ -7,3 +7,9 @@
   image: bookworm
   command: /data/project/ouikibot/article_semaine/run.sh
   schedule: "30 0 * * 1"
+
+- name: bouton-arret
+    jobtype: scheduled
+    schedule: "*/5 * * * *"
+    command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/bouton_arret.py
+    image: python311
