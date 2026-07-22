@@ -1,15 +1,14 @@
 - name: ouikibot-article-semaine
-  image: bookworm
-  command: /data/project/ouikibot/env/bin/python3 /data/project/ouikibot/article_semaine/script.py
-  schedule: "1 0 * * 1"
+  schedule: "5 0 * * 1"
+  command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/script.py
+  image: python3.11
 
 - name: annonce-article-semaine
-  image: bookworm
-  command: /data/project/ouikibot/article_semaine/run.sh
   schedule: "30 0 * * 1"
+  command: /data/project/ouikibot/article_semaine/run.sh
+  image: python3.11
 
-- name: bouton-arret
-    jobtype: scheduled
-    schedule: "*/5 * * * *"
-    command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/bouton_arret.py
-    image: python311
+- name: bouton-arret-ouikibot
+  schedule: "*/5 * * * *"
+  command: /data/project/ouikibot/article_semaine/venv/bin/python3 /data/project/ouikibot/article_semaine/bouton_arret.py
+  image: python3.11
